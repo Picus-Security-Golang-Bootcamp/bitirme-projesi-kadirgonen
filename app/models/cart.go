@@ -41,7 +41,7 @@ func NewCart(userName string) (*Cart, error) {
 
 func NewCartItem(id string, productId int, number int) (*CartItem, error) {
 	if number <= 0 {
-		return nil, fmt.Errorf("quantity must be greater than zero")
+		return nil, fmt.Errorf("number must be greater than zero")
 	}
 	return &CartItem{
 		CartID:    id,
