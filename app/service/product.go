@@ -11,7 +11,7 @@ type ProductService struct {
 	productRepo repo.ProductRepository
 }
 
-func NewStoreService(pr repo.ProductRepository) *ProductService {
+func NewProductService(pr repo.ProductRepository) *ProductService {
 	return &ProductService{
 		productRepo: pr,
 	}
