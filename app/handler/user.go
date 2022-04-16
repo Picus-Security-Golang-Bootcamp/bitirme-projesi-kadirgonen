@@ -11,7 +11,7 @@ import (
 )
 
 type (
-	Auth struct {
+	User struct {
 		userService service.UserService
 		authService service.JWTAuthService
 		logger      logger.Logger
@@ -42,8 +42,8 @@ func errorResponse(c *gin.Context, code int, msg string) {
 func successResponse(c *gin.Context, code int, msg string) {
 	c.JSON(code, response{msg})
 }
-func NewAuth(us service.UserService, as service.JWTAuthService, l logger.Logger) *Auth {
-	return &Auth{us, as, l}
+func NewUser(us service.UserService, as service.JWTAuthService, l logger.Logger) *User {
+	return &User{us, as, l}
 }
 func (c *Auth) SignUp(g *gin.Context) {
 	var req signupRequest
