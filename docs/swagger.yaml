@@ -1,0 +1,832 @@
+swagger: "2.0"
+basePath: /api/v1
+definitions:
+  handler.authResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  handler.cartResponse:
+    properties:
+      id:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/model.CartItem'
+        type: array
+    type: object
+  handler.categoryResponse:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  handler.createCategoryRequest:
+    properties:
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  handler.createProductRequest:
+    properties:
+      category_id:
+        type: integer
+      name:
+        type: string
+      number:
+        type: integer
+      stock_code:
+        type: string
+      cost:
+        type: number
+    required:
+    - category_id
+    - name
+    - number
+    - stock_code
+    - cost
+    type: object
+  handler.loginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  handler.newCartItemRequest:
+    properties:
+      product_id:
+        type: integer
+      number:
+        type: integer
+    type: object
+  handler.newOrderRequest:
+    properties:
+      address:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+    required:
+    - address
+    - name
+    - phone
+    type: object
+  handler.orderResponse:
+    properties:
+      id:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/model.OrderItem'
+        type: array
+    type: object
+  handler.productResponse:
+    properties:
+      category_id:
+        type: integer
+      category_name:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      number:
+        type: integer
+      stock_code:
+        type: string
+      cost:
+        type: number
+    type: object
+  handler.signupRequest:
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+    required:
+    - name
+    - email
+    - password
+    - phone 
+    type: object
+  handler.removeCartItemRequest:
+    properties:
+      product_id:
+        type: integer
+    type: object
+  handler.response:
+    properties:
+      message:
+        example: message
+        type: string
+    type: object
+  handler.searchResponse:
+    properties:
+      count:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/model.Product'
+        type: array
+    type: object
+  handler.updateProductRequest:
+    properties:
+      name:
+        type: string
+      number:
+        type: integer
+      cost:
+        type: number
+    required:
+    - name
+    - number
+    - cost
+    type: object
+  model.CartItem:
+    properties:
+      cart_id:
+        type: string
+      created_at:
+        type: string
+      product:
+        $ref: '#/definitions/model.Product'
+      product_id:
+        type: integer
+      number:
+        type: integer
+      updated_at:
+        type: string
+      deleted_at:
+        type: string
+    type: object
+  model.Category:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      products:
+        items:
+          $ref: '#/definitions/model.Product'
+        type: array
+      updated_at:
+        type: string
+      deleted_at:
+        type: string
+    type: object
+  model.OrderItem:
+    properties:
+      created_at:
+        type: string
+      order_id:
+        type: string
+      product:
+        $ref: '#/definitions/model.Product'
+      product_id:
+        type: integer
+      updated_at:
+        type: string
+      deleted_at:
+        type: string
+    type: object
+  model.Product:
+    properties:
+      category:
+        $ref: '#/definitions/model.Category'
+      category_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      number:
+        type: integer
+      stock_code:
+        type: string
+      cost:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  pagination.Pages:
+    properties:
+      items: {}
+      page:
+        type: integer
+      pageCount:
+        type: integer
+      pageSize:
+        type: integer
+      totalCount:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: An API for store management
+  title: Kadir Gönen Picus Api
+  version: "1.0"
+paths:
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      description: Returns a jwt token related to existing user account.
+      parameters:
+      - description: Login Model
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/handler.loginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.authResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.response'
+      tags:
+      - User
+  /user/signup:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user account and a JWT token.
+      parameters:
+      - description: Signup Model
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/handler.signupRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.authResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      tags:
+      - User
+  /cart:
+    delete:
+      consumes:
+      - application/json
+      description: Removes an item from basket.
+      parameters:
+      - description: Remove Basket Item Model
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/handler.removeCartItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Cart
+    get:
+      consumes:
+      - application/json
+      description: Returns user's cart.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.cartResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Cart
+    post:
+      consumes:
+      - application/json
+      description: Adds an item to cart.
+      parameters:
+      - description: New Cart Item Model
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/handler.newCartItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Cart
+    put:
+      consumes:
+      - application/json
+      description: Updates an item in basket.
+      parameters:
+      - description: New Cart Item Model
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/handler.newCartItemRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Cart
+  /category:
+    get:
+      consumes:
+      - application/json
+      description: Returns all categories with pagination.
+      parameters:
+      - description: Page Index
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pagination.Pages'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Category
+    post:
+      consumes:
+      - application/json
+      description: Creates a new category.
+      parameters:
+      - description: Create Category Model
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/handler.createCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.categoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Category
+  /category/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Returns one category by id.
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.categoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Category
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a category.
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - Category 
+  /category/bulk:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Creates new categories in bulk.
+      parameters:
+      - description: Category CSV
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      security:
+      - Bearer: []
+      tags:
+      - Category
+  /order:
+    get:
+      consumes:
+      - application/json
+      description: Returns user's orders.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.orderResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Order
+    post:
+      consumes:
+      - application/json
+      description: Creates an order with basket items.
+      parameters:
+      - description: New Order Model
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/handler.newOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Order
+  /order/{id}/cancel:
+    patch:
+      consumes:
+      - application/json
+      description: Cancels an order.
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Order
+  /product:
+    get:
+      consumes:
+      - application/json
+      description: Returns all products with pagination.
+      parameters:
+      - description: Page Index
+        in: query
+        name: page
+        type: integer
+      - description: Page Size
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pagination.Pages'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Product
+    post:
+      consumes:
+      - application/json
+      description: Creates a new product.
+      parameters:
+      - description: Create Product Model
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/handler.createProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.productResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Product
+  /product/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a product.
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Product
+    get:
+      consumes:
+      - application/json
+      description: Returns one product by id.
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.productResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Product
+    put:
+      consumes:
+      - application/json
+      description: Updates a product.
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update Product Model
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/handler.updateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.productResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Product
+  /product/search/{query}:
+    get:
+      consumes:
+      - application/json
+      description: Returns searched products.
+      parameters:
+      - description: Search Query
+        in: path
+        name: query
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.searchResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.response'
+      security:
+      - Bearer: []
+      tags:
+      - Product
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
