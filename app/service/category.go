@@ -47,7 +47,6 @@ func (s *CategoryService) CreateCategory(category *model.Category) error {
 func (s *CategoryService) CreateBulkCategory(file multipart.File) (int, int, error) {
 	reader := csv.NewReader(file)
 
-	reader.Comma = ';'
 	lines, err := reader.ReadAll()
 	if err != nil {
 		return 0, 0, errors.New("unable to initialize csv reader")
