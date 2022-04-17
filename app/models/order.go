@@ -17,9 +17,6 @@ type Order struct {
 	Address    string       `json:"address"`
 	Phone      string       `json:"phone"`
 	Items      []*OrderItem `gorm:"foreignkey:OrderID;" json:"items"`
-	Created_at time.Time    `json:"created_at"`
-	Updated_at time.Time    `json:"updated_at"`
-	Deleted_at time.Time    `json:"deleted_at"`
 }
 
 type OrderItem struct {
@@ -27,9 +24,6 @@ type OrderItem struct {
 	OrderID    string    `gorm:"primary_key" json:"order_id"`
 	ProductID  int       `gorm:"primary_key" json:"product_id"`
 	Product    *Product  `gorm:"foreignkey:ProductID;references:ID" json:"product"`
-	Created_at time.Time `json:"created_at"`
-	Updated_at time.Time `json:"updated_at"`
-	Deleted_at time.Time `json:"deleted_at"`
 }
 
 func NewOrder(userName string, name string, address string, phone string) (*Order, error) {
