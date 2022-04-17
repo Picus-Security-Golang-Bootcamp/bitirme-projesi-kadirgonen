@@ -13,9 +13,6 @@ type Cart struct {
 	ID         string      `gorm:"primary_key;" json:"id"`
 	UserName   string      `json:"user_name"`
 	Items      []*CartItem `gorm:"foreignkey:CartID;" json:"items"`
-	Created_at time.Time   `json:"created_at"`
-	Updated_at time.Time   `json:"updated_at"`
-	Deleted_at time.Time   `json:"deleted_at"`
 }
 
 type CartItem struct {
@@ -24,9 +21,6 @@ type CartItem struct {
 	ProductID  int       `gorm:"primary_key" json:"product_id"`
 	Product    *Product  `gorm:"foreignkey:ProductID;references:ID" json:"product"`
 	Number     int       `gorm:"not null" json:"number"`
-	Created_at time.Time `json:"created_at"`
-	Updated_at time.Time `json:"updated_at"`
-	Deleted_at time.Time `json:"deleted_at"`
 }
 
 func NewCart(userName string) (*Cart, error) {
