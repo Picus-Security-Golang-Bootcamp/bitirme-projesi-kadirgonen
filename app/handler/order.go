@@ -19,7 +19,7 @@ type (
 	newOrderRequest struct {
 		Name        string `json:"name" binding:"required"`
 		Address     string `json:"address" binding:"required"`
-		PhoneNumber string `json:"phone_number" binding:"required"`
+		Phone       string `json:"phone" binding:"required"`
 	}
 
 	orderResponse struct {
