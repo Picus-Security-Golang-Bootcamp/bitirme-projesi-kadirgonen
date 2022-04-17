@@ -28,7 +28,7 @@ func (s *CartService) AddItemCart(userName string, productId int, number int) er
 	if cart == nil {
 		cart, _ := model.NewCart(userName)
 		if err := s.cartRepo.CreatCart(cart); err != nil {
-			return errors.New("unable to create basket")
+			return errors.New("unable to create cart")
 		}
 	}
 
@@ -57,7 +57,7 @@ func (s *CartService) AddItemCart(userName string, productId int, number int) er
 func (s *CartService) UpdateItemCart(userName string, productId int, number int) error {
 	cart := s.cartRepo.GetCart(userName)
 	if cart == nil {
-		return errors.New("basket not found")
+		return errors.New("cart not found")
 	}
 
 	_, item := cart.SearchItemByProductId(productId)
@@ -90,7 +90,7 @@ func (s *CartService) UpdateItemCart(userName string, productId int, number int)
 func (s *CartService) RemoveItemCart(userName string, productId int) error {
 	cart := s.cartRepo.GetCart(userName)
 	if cart == nil {
-		return errors.New("basket not found")
+		return errors.New("cart not found")
 	}
 
 	_, item := cart.SearchItemByProductId(productId)
