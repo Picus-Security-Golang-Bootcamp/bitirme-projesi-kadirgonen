@@ -13,16 +13,10 @@ type User struct {
 	Password   string    `json:"-"`
 	Phone      string    `json:"phone"`
 	Roles      []*Role   `gorm:"many2many:user_roles;" json:"roles"`
-	Created_at time.Time `json:"created_at"`
-	Updated_at time.Time `json:"updated_at"`
-	Deleted_at time.Time `json:"deleted_at"`
 }
 type Role struct {
 	gorm.Model
 	Name       string    `gorm:"primary_key;" json:"name"`
-	Created_at time.Time `json:"created_at"`
-	Updated_at time.Time `json:"updated_at"`
-	Deleted_at time.Time `json:"deleted_at"`
 }
 
 func NewUser(email string, password string, roles []*Role) *User {
