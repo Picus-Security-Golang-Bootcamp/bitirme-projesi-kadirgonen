@@ -1,0 +1,39 @@
+ServerConfig:
+  AppVersion: 1.0.0
+  Mode: Development
+  RoutePrefix: /api/v1/picus-e-commerce
+  Debug: false
+  Port: 8080
+  TimeoutSecs: 60
+  ReadTimeoutSecs: 60
+  WriteTimeoutSecs: 12
+
+JWTConfig:
+  JWTSecret: kgSECRETKEY
+  JWTIss: localhost
+  JWTExp: 6h
+
+DBConfig:
+  DataSourceName: postgres://postgres:2236386alper@localhost:5432/PatikaGoDB?sslmode=disable
+  DBHost: localhost
+  DBPort: 5432
+  DBDatabaseName: postgres
+  DBUsername: PatikaGoDB
+  DBPassword: 2236386alper
+  MaxOpen: 50
+  MaxIdle: 50
+  MaxLifetime: 5
+
+Logger:
+  Development: true
+  Encoding: json
+  Level: info
+
+Migration:
+  AutoMigrate: true
+
+Gin:
+  GINMode: debug
+
+Http:
+  HTTPPort: 8080
