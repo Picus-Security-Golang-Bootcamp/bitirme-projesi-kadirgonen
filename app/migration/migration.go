@@ -14,7 +14,7 @@ var roles = []model.Role{
 }
 
 var users = []model.User{
-	{Email: "kg@kgstore.com", Password: "kg1453", Roles: []*model.Role{&roles[0]}},
+        {Name: "kadir", Email: "kg@kgstore.com", Password: "kg1453", Phone: "05436680353", Roles: []*model.Role{&roles[0]}},
 }
 
 var categories = []model.Category{
