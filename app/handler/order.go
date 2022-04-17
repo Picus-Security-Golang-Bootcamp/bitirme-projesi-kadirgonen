@@ -57,7 +57,7 @@ func (c *Order) CreateOrder(g *gin.Context) {
 		return
 	}
 
-	err := c.orderService.CreateOrder(userName, req.Name, req.Address, req.PhoneNumber)
+	err := c.orderService.CreateOrder(userName, req.Name, req.Address, req.Phone)
 	if err != nil {
 		errorResponse(g, http.StatusNotFound, err.Error())
 		return
