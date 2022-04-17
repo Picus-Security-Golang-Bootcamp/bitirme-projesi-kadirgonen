@@ -80,7 +80,7 @@ func (c *Cart) UpdateCartItem(g *gin.Context) {
 
 	var req newCartItemRequest
 	if err := g.ShouldBind(&req); err != nil {
-		c.logger.Error(err, "http - updateBasketItem")
+		c.logger.Error(err, "http - updateCartItem")
 		errorResponse(g, http.StatusBadRequest, "invalid request body")
 		return
 	}
@@ -102,7 +102,7 @@ func (c *Cart) RemoveCartItem(g *gin.Context) {
 
 	var req removeCartItemRequest
 	if err := g.ShouldBind(&req); err != nil {
-		c.logger.Error(err, "http - removeBasketItem")
+		c.logger.Error(err, "http - removeCartItem")
 		errorResponse(g, http.StatusBadRequest, "invalid request body")
 		return
 	}
