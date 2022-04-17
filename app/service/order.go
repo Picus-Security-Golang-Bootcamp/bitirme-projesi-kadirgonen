@@ -24,8 +24,8 @@ func (s *OrderService) GetAllOrders(userName string) []model.Order {
 	return s.orderRepo.GetAllOrders(userName)
 }
 
-func (s *OrderService) CreateOrder(userName string, name string, address string, phoneNumber string) error {
-	order, _ := model.NewOrder(userName, name, address, phoneNumber)
+func (s *OrderService) CreateOrder(userName string, name string, address string, phone string) error {
+	order, _ := model.NewOrder(userName, name, address, phone)
 
 	cart := s.cartRepo.GetCart(userName)
 	if cart == nil {
