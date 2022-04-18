@@ -72,6 +72,24 @@ You can see the whole operation of the application and what has been done here.
 
 Swagger file: https://app.swaggerhub.com/apis/kadirgonen/kadir-gonen_picus_api/1.0#/
 
+## Used Pkg Packages
+
+* database_handler: For database connection
+* pagination: For paginate objects
+* logger: For see errors as messages
+* httpserver: For server processes
+
+## Used Files
+
+* main.go: Main application file.
+* Config: Configuration files.
+* Repositories: CRUD operations handling.
+* Models: It is our domain data.
+* Handlers: This files , they receive the request from the user, they ask the services to perform an action for them on the database.
+* Services: contains some business logic for each model, and for authorization.
+* Middlewares: it contains middlewares(golang functions) that are triggered before the controller action, for example, a middleware which reads the request looking for the Jwt token and trying to authenticate the user before forwarding the request to the corresponding controller action.
+* PKG: it contains the packages that are used by the application.
+
 ## Requirements
 
 * Go Language
@@ -81,6 +99,9 @@ Swagger file: https://app.swaggerhub.com/apis/kadirgonen/kadir-gonen_picus_api/1
 * Gin
 * Postgres
 * JWT
+* Viper
+* Swagger
+* Zerolog
 
 ## Acknowledgments
 
