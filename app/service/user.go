@@ -5,7 +5,7 @@ import (
 	"time"
 
 	model "HW/app/models"
-	"HW/app/repo"
+	user "HW/app/repo"
 	"HW/config"
 
 	"github.com/dgrijalva/jwt-go"
@@ -13,7 +13,7 @@ import (
 
 type (
 	UserService struct {
-		repo repo.UserRepository
+		repo user.UserRepositoryInterface
 	}
 
 	JWTAuthService struct {
@@ -26,8 +26,13 @@ type (
 		jwt.StandardClaims
 	}
 )
+type UserServiceInterface interface {
+	GetUser(email string, password string) *model.User
+	UserHasRole(id int, role string) bool
+	CreateUser(user *model.User) error
+}
 
-func NewUserService(r repo.UserRepository) *UserService {
+func NewUserService(r user.UserRepositoryInterface) *UserService {
 	return &UserService{
 		repo: r,
 	}
@@ -107,3 +112,4 @@ func getTokenFromString(tokenString string, secret string, claims *JwtClaims) (*
 		return []byte(secret), nil
 	})
 }
+
