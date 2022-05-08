@@ -8,6 +8,16 @@ import (
 	"gorm.io/gorm"
 )
 
+type UserRepositoryInterface interface {
+	GetAllUsers() ([]model.User, int)
+	GetUser(id int) *model.User
+	GetUserWithRoles(id int) *model.User
+	GetUserEmail(email string) *model.User
+	GetUserEmailPassword(email string, password string) *model.User
+	CreateUser(User *model.User) error
+	UpdateUser(User *model.User) error
+	DeleteUser(id int) error
+}
 type UserRepository struct {
 	db *gorm.DB
 }
@@ -38,7 +48,7 @@ func (r *UserRepository) GetUser(id int) *model.User {
 	return &user
 }
 
-func (r *UserRepository) GetUserIdWithRoles(id int) *model.User {
+func (r *UserRepository) GetUserWithRoles(id int) *model.User {
 	var user model.User
 	result := r.db.Preload("Roles").First(&user, id)
 
@@ -71,8 +81,8 @@ func (r *UserRepository) GetUserEmailPassword(email string, password string) *mo
 	return &user
 }
 
-func (r *UserRepository) CreateUser(c *model.User) error {
-	result := r.db.Create(&c)
+func (r *UserRepository) CreateUser(User *model.User) error {
+	result := r.db.Create(&User)
 
 	if result.Error != nil {
 		return result.Error
@@ -81,8 +91,8 @@ func (r *UserRepository) CreateUser(c *model.User) error {
 	return nil
 }
 
-func (r *UserRepository) UpdateUser(c *model.User) error {
-	result := r.db.Save(&c)
+func (r *UserRepository) UpdateUser(User *model.User) error {
+	result := r.db.Save(&User)
 
 	if result.Error != nil {
 		return result.Error
@@ -100,3 +110,4 @@ func (r *UserRepository) DeleteUser(id int) error {
 
 	return nil
 }
+
