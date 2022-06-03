@@ -30,7 +30,7 @@ func NewRouter(handler *gin.Engine, l *logger.Logger, c *config.Config, db *gorm
 	handler.GET("/healthz", func(c *gin.Context) { c.Status(http.StatusOK) })
 
 	// Repo
-	userRepo := repo.NewUserRepository(db)
+	userRepo := repo.NewUserRepositoryInterface(db)
 	categoryRepo := repo.NewCategoryRepository(db)
 	productRepo := repo.NewProductRepository(db)
 	cartRepo := repo.NewCartRepository(db)
