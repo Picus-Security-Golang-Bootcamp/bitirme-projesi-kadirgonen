@@ -27,7 +27,7 @@ func (r *CategoryRepository) GetAllCategories(pageIndex, pageSize int) ([]model.
 	return categories, int(count)
 }
 
-func (r *CategoryRepository) GetCategory(id uint32) *model.Category {
+func (r *CategoryRepository) GetCategory(id int) *model.Category {
 	var product model.Category
 	result := r.db.First(&product, id)
 
