@@ -44,7 +44,7 @@ func (s *OrderService) CreateOrder(userName string, name string, address string,
 	}
 
 	if err := s.cartRepo.DeleteCart(cart.ID); err != nil {
-		return errors.New("unable to clear basket")
+		return errors.New("unable to clear cart")
 	}
 
 	return nil

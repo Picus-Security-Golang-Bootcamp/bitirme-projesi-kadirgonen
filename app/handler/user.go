@@ -45,7 +45,7 @@ func successResponse(c *gin.Context, code int, msg string) {
 func NewUser(us service.UserService, as service.JWTAuthService, l logger.Logger) *User {
 	return &User{us, as, l}
 }
-func (c *Auth) SignUp(g *gin.Context) {
+func (c *User) SignUp(g *gin.Context) {
 	var req signupRequest
 	if err := g.ShouldBind(&req); err != nil {
 		c.logger.Error(err, "signup")
@@ -69,7 +69,7 @@ func (c *Auth) SignUp(g *gin.Context) {
 	g.JSON(http.StatusOK, authResponse{Token: *token})
 }
 
-func (c *Auth) Login(g *gin.Context) {
+func (c *User) Login(g *gin.Context) {
 	var req loginRequest
 	if err := g.ShouldBind(&req); err != nil {
 		c.logger.Error(err, "login")

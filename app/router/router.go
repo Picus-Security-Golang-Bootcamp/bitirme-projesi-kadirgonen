@@ -38,7 +38,7 @@ func NewRouter(handler *gin.Engine, l *logger.Logger, c *config.Config, db *gorm
 
 	// Service
 	authService := service.NewJWTAuthService(*c)
-	userService := service.NewUserService(*userRepo)
+	userService := service.NewUserService(userRepo)
 	categoryService := service.NewCategoryService(*categoryRepo)
 	productService := service.NewProductService(*productRepo)
 	cartService := service.NewCartService(*cartRepo, *productRepo)
